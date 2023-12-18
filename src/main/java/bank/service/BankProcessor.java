@@ -1,15 +1,20 @@
 package bank.service;
 
+import bank.ConsoleReader;
 import bank.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class BankProcessor {
 
-    Scanner scanner = new Scanner(System.in);
-    BankService bankService = new BankService();
+   private final ConsoleReader consoleReader ;
+    private final BankService bankService ;
+
+    public BankProcessor(ConsoleReader consoleReader, BankService bankService) {
+        this.consoleReader = consoleReader;
+        this.bankService = bankService;
+    }
 
 
     public void init() {
@@ -23,7 +28,7 @@ public class BankProcessor {
             int choice = 0;
 
             try {
-                choice = scanner.nextInt();
+                choice = consoleReader.readConsoleInt();
             } catch (Exception e) {
                 System.out.println("Use numbers!!");
                 System.err.println(e.getMessage());

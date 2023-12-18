@@ -1,5 +1,6 @@
 package bank.service;
 
+import bank.ConsoleReader;
 import bank.model.Account;
 
 import java.util.List;
@@ -7,7 +8,13 @@ import java.util.Scanner;
 
 public class BankService {
     int deposit = 0;
-    Scanner scanner = new Scanner(System.in);
+    private final ConsoleReader consoleReader;
+
+
+    public BankService(ConsoleReader consoleReader) {
+        this.consoleReader= consoleReader;
+
+    }
 
     public void printOptions() {
         System.out.println("Banking System Application ***");
@@ -25,15 +32,15 @@ public class BankService {
 
     public void openAccount(List<Account> accounts) {
         System.out.print("Enter Account No: ");
-        int accountNo = scanner.nextInt();
+        int accountNo = consoleReader.readConsoleInt();
         System.out.print("Enter Name: ");
-        String name = scanner.nextLine();
-        scanner.nextLine();
+        String name = consoleReader.readConsoleLine();
+        consoleReader.readConsoleLine();
         System.out.print("Enter Balance: ");
-        int balance = scanner.nextInt();
-        scanner.nextLine();
+        int balance = consoleReader.readConsoleInt();
+        consoleReader.readConsoleInt();
         System.out.print("Enter Account type:( Checking,Savings,Business, Joint) ");
-        String accountType = scanner.nextLine();
+        String accountType = consoleReader.readConsoleLine();
         if (isValidAccountType(accountType)) {
             accounts.add(new Account(accountNo, name, accountType, balance));
             System.out.println("Account has been  opened successfully");
@@ -61,63 +68,63 @@ public class BankService {
 
     public void findByID(List<Account> accounts) {
         System.out.print("Enter the account id: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        int id =consoleReader.readConsoleInt();
+        consoleReader.readConsoleInt();
         for (Account account : accounts) {
             if (account.getId() == id) {
                 System.out.print(account);
-            }
-        }
-        System.out.println("Account not found");
-    }
-
-
-    public void deposit(List<Account> accounts) {
-        System.out.print("Enter the account id: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-        for (Account account : accounts) {
-            if (account.getId() == id) {
-                System.out.println("Your current balance is" + " " + account.getBalance() + " ");
-                System.out.print("Enter the amount you want to deposit to account balance :");
-                deposit = scanner.nextInt();
-                scanner.nextLine();
-                int newBalance = account.getBalance() + deposit;
-                account.setBalance(newBalance);
-                System.out.println("Your new balance is:" + account.getBalance());
-                break;
+            } else {
+                System.out.println("Account not found");
             }
         }
     }
 
-    public void withdraw(List<Account> accounts) {
-        System.out.println("Enter the account id");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-        for (Account account : accounts) {
-            if (account.getId() == id) {
-                System.out.println("Your current balance is" + " " + account.getBalance() + " ");
-                System.out.println("Enter the amount you want to withdraw:");
-                int withdraw = scanner.nextInt();
-                scanner.nextLine();
-                if (account.getBalance() >= withdraw) {
-                    int newBalance = account.getBalance() - withdraw;
+        public void deposit (List < Account > accounts) {
+            System.out.print("Enter the account id: ");
+            int id = consoleReader.readConsoleInt();
+            consoleReader.readConsoleInt();
+            for (Account account : accounts) {
+                if (account.getId() == id) {
+                    System.out.println("Your current balance is" + " " + account.getBalance() + " ");
+                    System.out.print("Enter the amount you want to deposit to account balance :");
+                    deposit = consoleReader.readConsoleInt();
+                    consoleReader.readConsoleInt();
+                    int newBalance = account.getBalance() + deposit;
                     account.setBalance(newBalance);
-                    System.out.println("Your balance after withdraw is" + " " + account.getBalance());
-                } else {
-                    System.out.println("Your balance is less than " + " " + withdraw + " " + "Transaction failed...!!");
-
+                    System.out.println("Your new balance is:" + account.getBalance());
+                    break;
                 }
             }
+        }
+
+        public void withdraw (List < Account > accounts) {
+            System.out.println("Enter the account id");
+            int id = consoleReader.readConsoleInt();
+
+            for (Account account : accounts) {
+                if (account.getId() == id) {
+                    System.out.println("Your current balance is" + " " + account.getBalance() + " ");
+                    System.out.println("Enter the amount you want to withdraw:");
+                    int withdraw = consoleReader.readConsoleInt();
+                    consoleReader.readConsoleLine();
+                    if (account.getBalance() >= withdraw) {
+                        int newBalance = account.getBalance() - withdraw;
+                        account.setBalance(newBalance);
+                        System.out.println("Your balance after withdraw is" + " " + account.getBalance());
+                    } else {
+                        System.out.println("Your balance is less than " + " " + withdraw + " " + "Transaction failed...!!");
+
+                    }
+                }
+
+            }
 
         }
 
-    }
+        public void exit (List < Account > accounts) {
+            System.out.println("See you next time!");
 
-    public void exit (List < Account > accounts) {
-        System.out.println("See you next time!");
-
+        }
     }
-}
 
 
