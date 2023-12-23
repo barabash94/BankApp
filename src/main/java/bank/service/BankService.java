@@ -12,7 +12,7 @@ public class BankService {
 
 
     public BankService(ConsoleReader consoleReader) {
-        this.consoleReader= consoleReader;
+        this.consoleReader = consoleReader;
 
     }
 
@@ -67,64 +67,73 @@ public class BankService {
     }
 
     public void findByID(List<Account> accounts) {
-        System.out.print("Enter the account id: ");
-        int id =consoleReader.readConsoleInt();
-        consoleReader.readConsoleInt();
-        for (Account account : accounts) {
-            if (account.getId() == id) {
-                System.out.print(account);
-            } else {
-                System.out.println("Account not found");
-            }
-        }
-    }
-
-        public void deposit (List < Account > accounts) {
             System.out.print("Enter the account id: ");
             int id = consoleReader.readConsoleInt();
             consoleReader.readConsoleInt();
+
+            boolean accountFound = false;
+
             for (Account account : accounts) {
                 if (account.getId() == id) {
-                    System.out.println("Your current balance is" + " " + account.getBalance() + " ");
-                    System.out.print("Enter the amount you want to deposit to account balance :");
-                    deposit = consoleReader.readConsoleInt();
-                    consoleReader.readConsoleInt();
-                    int newBalance = account.getBalance() + deposit;
-                    account.setBalance(newBalance);
-                    System.out.println("Your new balance is:" + account.getBalance());
+                    System.out.print(account);
+                    accountFound = true;
                     break;
                 }
             }
+
+            if (!accountFound) {
+                throw new IllegalStateException("Account not found");
+            }
+
+    }
+
+
+    public void deposit(List<Account> accounts) {
+        System.out.print("Enter the account id: ");
+        int id = consoleReader.readConsoleInt();
+        consoleReader.readConsoleInt();
+        for (Account account : accounts) {
+            if (account.getId() == id) {
+                System.out.println("Your current balance is" + " " + account.getBalance() + " ");
+                System.out.print("Enter the amount you want to deposit to account balance :");
+                deposit = consoleReader.readConsoleInt();
+                consoleReader.readConsoleInt();
+                int newBalance = account.getBalance() + deposit;
+                account.setBalance(newBalance);
+                System.out.println("Your new balance is:" + account.getBalance());
+                break;
+            }
         }
+    }
 
-        public void withdraw (List < Account > accounts) {
-            System.out.println("Enter the account id");
-            int id = consoleReader.readConsoleInt();
+    public void withdraw(List<Account> accounts) {
+        System.out.println("Enter the account id");
+        int id = consoleReader.readConsoleInt();
 
-            for (Account account : accounts) {
-                if (account.getId() == id) {
-                    System.out.println("Your current balance is" + " " + account.getBalance() + " ");
-                    System.out.println("Enter the amount you want to withdraw:");
-                    int withdraw = consoleReader.readConsoleInt();
-                    consoleReader.readConsoleLine();
-                    if (account.getBalance() >= withdraw) {
-                        int newBalance = account.getBalance() - withdraw;
-                        account.setBalance(newBalance);
-                        System.out.println("Your balance after withdraw is" + " " + account.getBalance());
-                    } else {
-                        System.out.println("Your balance is less than " + " " + withdraw + " " + "Transaction failed...!!");
+        for (Account account : accounts) {
+            if (account.getId() == id) {
+                System.out.println("Your current balance is" + " " + account.getBalance() + " ");
+                System.out.println("Enter the amount you want to withdraw:");
+                int withdraw = consoleReader.readConsoleInt();
+                consoleReader.readConsoleLine();
+                if (account.getBalance() >= withdraw) {
+                    int newBalance = account.getBalance() - withdraw;
+                    account.setBalance(newBalance);
+                    System.out.println("Your balance after withdraw is" + " " + account.getBalance());
+                } else {
+                    System.out.println("Your balance is less than " + " " + withdraw + " " + "Transaction failed...!!");
 
-                    }
                 }
-
             }
 
         }
 
-        public void exit (List < Account > accounts) {
-            System.out.println("See you next time!");
-
-        }
     }
+
+    public void exit(List<Account> accounts) {
+        System.out.println("See you next time!");
+
+    }
+}
 
 

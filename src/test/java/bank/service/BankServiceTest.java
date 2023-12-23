@@ -4,12 +4,15 @@ import bank.ConsoleReader;
 import bank.model.Account;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 
 class BankServiceTest {
@@ -29,7 +32,6 @@ class BankServiceTest {
         when(this.consoleReader.readConsoleInt()).thenReturn(1230000);
 
 
-
         // when
         bankService.openAccount(accounts);
 
@@ -44,16 +46,66 @@ class BankServiceTest {
         List<Account> accounts = new ArrayList<>();
         accounts.add(new Account(13, "Zofia", "joint", 1235000));
         accounts.add(new Account(134, "Suzie", "joint", 45000));
-        when(this.consoleReader.readConsoleInt()).thenReturn(1);
+        when(consoleReader.readConsoleInt()).thenReturn(1);
         when(consoleReader.readConsoleLine()).thenReturn("");
 
         //when
-        Account expected = new Account(13, "Zofia", "joint", 1235000);
+
         bankService.findByID(accounts);
 
         //then
-        Assertions.assertNotEquals(expected,accounts.get(0));
+        Account expected = new Account(13, "Zofia", "joint", 1235000);
+        assertNotEquals(expected, accounts.get(0));
 
     }
+
+    @Test
+
+    public void should_verify_FindById_method() {
+        //given
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(new Account(11, "Betty", "joint", 1235000));
+        accounts.add(new Account(27, "Cara", "joint", 45000));
+        when(consoleReader.readConsoleInt()).thenReturn(2);
+
+        //when
+
+        bankService.findByID(accounts);
+
+        //then
+
+        verify(consoleReader, times(2)).readConsoleInt();
+
+    }
+
+    @Test
+    public void testFindByID_WhenAccountNotFound_ThrowsException() {
+
+        //given
+
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(new Account(11, "Betty", "joint", 1235000));
+        accounts.add(new Account(27, "Cara", "joint", 45000));
+        when(consoleReader.readConsoleInt()).thenReturn(-1);
+
+        //when
+
+        final var exception = assertThrows(IllegalStateException.class, () -> bankService.findByID(accounts));
+
+
+        //then
+
+        assertEquals("Account not found", exception.getMessage());
+        assertTrue(exception.getMessage().contains("Account not found"));
+
+
+    }
+
+
 }
+
+
+
+
+
 
